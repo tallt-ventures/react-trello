@@ -63,8 +63,8 @@ class EditableLabel extends React.Component {
         onInput={this.onTextChange}
         onKeyDown={this.onKeyDown}
         onKeyUp={this.onTextChange}
-        placeholder={this.props.value.length == 0 ? false : this.props.placeholder}
-        >{this.props.value}</div>
+        placeholder={this.props.placeholder}
+      />
     )
   }
 }
