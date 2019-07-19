@@ -9,8 +9,10 @@ class EditableLabel extends React.Component {
   }
 
   onTextChange = ev => {
-    const text = this.getText(ev.target)
-    this.setState({text: text})
+    if(this.props.maxLength !== undefined && this.refDiv.innerText.length > this.props.maxLength){
+      this.refDiv.innerText = this.refDiv.innerText.substring(0, this.props.maxLength);
+    }
+    this.setState({text: this.refDiv.innerText})
   }
 
   componentDidMount() {
@@ -34,6 +36,22 @@ class EditableLabel extends React.Component {
     return `comPlainTextContentEditable ${placeholder}`
   }
 
+  onKeyDown = (e) => {
+    if(e.keyCode === 13) {
+      this.props.onChange(this.state.value)
+      this.refDiv.blur()
+      e.preventDefault()
+    }
+    if(e.keyCode === 27) {
+      this.refDiv.value = this.props.value
+      this.setState({value: this.props.value})
+      // this.refDiv.blur()
+      e.preventDefault()
+      e.stopPropagation()
+    }
+    this.onTextChange(e);
+  }
+
   render() {
     return (
       <div
@@ -43,8 +61,10 @@ class EditableLabel extends React.Component {
         onPaste={this.onPaste}
         onBlur={this.onBlur}
         onInput={this.onTextChange}
-        placeholder={this.props.placeholder}
-      />
+        onKeyDown={this.onKeyDown}
+        onKeyUp={this.onTextChange}
+        placeholder={this.props.value.length == 0 ? false : this.props.placeholder}
+        >{this.props.value}</div>
     )
   }
 }
@@ -57,7 +77,8 @@ EditableLabel.defaultProps = {
 EditableLabel.propTypes = {
   onChange: PropTypes.func,
   placeholder: PropTypes.string,
-  autoFocus: PropTypes.bool
+  autoFocus: PropTypes.bool,
+  maxLength: PropTypes.number
 }
 
 export default EditableLabel

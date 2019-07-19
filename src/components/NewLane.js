@@ -18,7 +18,7 @@ class NewLane extends Component {
     return (
         <Section>
           <LaneTitle>
-            <EditableLabel placeholder="title" onChange={val => this.updateField('title', val)} autoFocus/>
+            <EditableLabel placeholder="title" onChange={val => this.updateField('title', val)} autoFocus maxLength={this.props.maxLength} />
           </LaneTitle>
           <NewLaneButtons>
             <AddButton onClick={this.handleAdd}>Add</AddButton>
@@ -31,8 +31,11 @@ class NewLane extends Component {
 
 NewLane.propTypes = {
   onCancel: PropTypes.func.isRequired,
-  onAdd: PropTypes.func.isRequired
+  onAdd: PropTypes.func.isRequired,
+  maxLength: PropTypes.number
 }
-NewLane.defaultProps = {}
+NewLane.defaultProps = {
+  maxLength: 50
+}
 
 export default NewLane
